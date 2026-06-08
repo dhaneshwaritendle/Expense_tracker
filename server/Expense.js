@@ -1,14 +1,14 @@
 const pool = require("./db");
 
 class Expense {
-    static async create(title, amount, category) {
+    static async create(title, amount, category, date) {
     const sql = `
-      INSERT INTO expenses (title, amount, category)
+      INSERT INTO expenses (title, amount, category, date)
       VALUES ($1, $2, $3)
       RETURNING *;
     `;
     console.log('sql:', sql);
-    const values = [title, amount, category];
+    const values = [title, amount, category, date];
     console.log('values:', values);
     const { rows } = await pool.query(sql, values);
     return rows[0];

@@ -26,16 +26,16 @@ app.get("/api/expenses", async (req, res) => {
 
 app.post("/api/expenses", async (req, res) => {
   try {
-    const { title, amount, category } = req.body;
+    const { title, amount, category, date } = req.body;
 
     // Simple validation rule
-    if (!title || !amount || !category) {
+    if (!title || !amount || !category || !date) {
       return res
         .status(400)
-        .json({ error: "Missing title, amount, or category" });
+        .json({ error: "Missing title, amount, date or category" });
     }
 
-    const newExpense = await Expense.create(title, amount, category);
+    const newExpense = await Expense.create(title, amount, category, date);
     console.log("post expenses:", newExpense);
     res.status(201).json(newExpense);
     console.log("post expenses success:");
