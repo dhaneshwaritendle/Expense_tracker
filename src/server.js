@@ -24,7 +24,7 @@ app.get("/api/expenses", authenticateToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
+}); 
 app.get("/debug/db", async (req, res) => {
   const users = await prisma.user.findMany();
   const expenses = await prisma.expense.findMany();

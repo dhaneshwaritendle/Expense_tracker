@@ -51,7 +51,7 @@ class Expense {
     const data = await prisma.expense.groupBy({
       by : ['category'],
       // where : {userId: req.userId},
-      _sum : {amount:true}
+      _sum : {amount:true} 
     });
   }
 }
