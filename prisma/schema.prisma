@@ -3,17 +3,14 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
-}
+  directUrl = env("DIRECT_URL")
+} 
 
 model User {
-  id            Int       @id @default(autoincrement())
-  email         String    @unique
-  name          String
+  id            String    @id 
   username      String    @unique
-  password_hash String
-  created_at    DateTime  @default(now())
   expenses      Expense[]
 }
 
@@ -24,6 +21,6 @@ model Expense {
   category   String
   date       DateTime
   created_at DateTime @default(now())
-  userId     Int
+  userId     String
   user       User     @relation(fields: [userId], references: [id])
 }

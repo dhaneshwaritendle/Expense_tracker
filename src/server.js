@@ -1,20 +1,22 @@
+import 'dotenv/config';
+
 import Expense from "./Expense.js";
 
 import express from "express";
 import prisma from "./db.js";
 import User from "./User.js";
-import bcrypt from "bcrypt";
-import cookieParser from "cookie-parser";
 import cors from "cors";
-import { generateToken, authenticateToken } from "./auth.js";
+import { authenticateToken } from "./auth.js";
 
 // middleware to parse json request bodies
 const app = express();
-const PORT = process.env.PORT ;
-app.use(cookieParser());
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin:'http://localhost:5173',
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.get("/api/expenses", authenticateToken, async (req, res) => {
   try {
@@ -47,18 +49,22 @@ app.post("/api/expenses", authenticateToken, async (req, res) => {
 
     const fallbackUserId = req.body.userId ? parseInt(req.body.userId) : req.user.id;
 
-    const { title, amount, category, date, userId } = req.body;
+    const { title, amount, category, date } = req.body;
+    const verifiedUserId = req.user.id;
     console.log("BODY:", req.body);
     const newExpense = await Expense.create(
       title,
       Number(amount),
       category,
       new Date(date),
-      Number(fallbackUserId) ,
+      verifiedUserId ,
     );
     res.status(200).json({ success: newExpense });
+    console.log("success");
   } catch (error) {
-    res.status(500).json({
+    console.error("ROUTE CRASH LOG:", error.message);
+    res.status(500).json({ 
+      success:false,
       error: error.message,
     });
   }
@@ -86,7 +92,7 @@ app.patch("/api/expenses/:id", authenticateToken, async (req, res) => {
   }
 });
 
-app.delete("/api/expenses/delete/:id", authenticateToken, async (req, res) => {
+app.delete("/api/expenses/:id", authenticateToken, async (req, res) => {
   try {
     const id = req.params.id;
     const deletedata = await Expense.delete(id);
@@ -94,76 +100,6 @@ app.delete("/api/expenses/delete/:id", authenticateToken, async (req, res) => {
       .status(200)
       .json({ message: "Expense item  deleted", data: deletedata });
   } catch (error) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// POST: Register / Sign Up
-app.post("/api/auth/signup", async (req, res) => {
-  try {
-    console.log(req.body);
-    const { name, email, username, password } = req.body;
-
-    if (!name || !email || !username || !password) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-
-    const newUser = await User.create(name, email, username, password);
-    res
-      .status(201)
-      .json({ message: "User registered successfully!", user: newUser });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Login / Authenticate
-app.post("/api/auth/login", async (req, res) => {
-  try {
-    const { username, password } = req.body || {};
-
-    if (!username || !password) {
-      return res
-        .status(400)
-        .json({ error: "Username and password are required" });
-    }
-
-    // check if user exists
-    const user = await User.findByUsername(username);
-    if (!user) {
-      return res.status(401).json({ error: "Invalid username or password" });
-    }
-
-    // compare encrypted database hash
-    const isMatch = await bcrypt.compare(password, user.password_hash);
-    if (!isMatch) {
-      return res.status(401).json({ error: "Invalid username or password" });
-    }
-    const token = generateToken(user);
-    
-    // Set the token in an HTTP-only cookie
-    res.cookie('auth_token', token, {
-      httpOnly: true, // The cookie is not accessible via JavaScript
-      secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-      sameSite: 'strict', // Helps mitigate CSRF attacks
-      maxAge: 60 * 60 * 1000 // 1 hour, same as the token's expiration
-    });
-
-    // Send a success response without the token in the body.
-    // The user object can be sent for the client to use.
-    res.status(200).json({
-      message: "Login successful!",
-      user: {
-        id: user.id,
-        fullName: user.name,
-        email: user.email,
-        username: user.username,
-      },
-    });
-  } catch (err) {
-    console.log(err);
-
     res.status(500).json({ error: err.message });
   }
 });

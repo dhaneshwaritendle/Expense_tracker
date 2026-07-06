@@ -2,14 +2,14 @@ import prisma from "./db.js";
 
 class Expense {
   static async create(title, amount, category, date, userId) {
-    console.log(title, amount, category, date, userId)
+    console.log("Expense create",title, amount, category, date, userId)
     return await prisma.expense.create({
       data: {
         title,
         amount: Number(amount),
         category,
         date: new Date(date),
-        userId: Number(userId)
+        userId: userId
       }
     });
   }
@@ -50,7 +50,7 @@ class Expense {
   static async findByCategory(category){
     const data = await prisma.expense.groupBy({
       by : ['category'],
-      // where : {userId: req.userId},
+      where : {userId: req.userId},
       _sum : {amount:true} 
     });
   }
