@@ -1,29 +1,55 @@
-const pool = require("./db");
+import prisma from "./src/db.js";
 
 class Expense {
-    static async create(title, amount, category, date) {
-    const sql = `
-      INSERT INTO expenses (title, amount, category, date)
-      VALUES ($1, $2, $3)
-      RETURNING *;
-    `;
-    console.log('sql:', sql);
-    const values = [title, amount, category, date];
-    console.log('values:', values);
-    const { rows } = await pool.query(sql, values);
-    return rows[0];
+  static async create(title, amount, category, date, userId) {
+    console.log(title, amount, category, date, userId)
+    return await prisma.expense.create({
+      data: {
+        title,
+        amount: Number(amount),
+        category,
+        date: new Date(date),
+        userId: Number(userId)
+      }
+    });
   }
 
   static async findAll() {
-    const sql = `select * from expenses order by created_at desc;`;
-    const { rows } = await pool.query(sql);
-    console.log('rows:', rows);
-    return rows;
+    return await prisma.expense.findMany({
+      orderBy: {
+        date: "desc",
+      },
+    });
   }
   static async findById(id) {
-    const sql = 'SELECT * FROM expenses WHERE id = $1;';
-    const { rows } = await pool.query(sql, [id]);
-    return rows[0] || null;
+    return await prisma.expense.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+  }
+
+  static async update(id, data) {
+    return prisma.expense.update({
+      where:{
+        id:Number(id)
+      },
+      data
+    });
+  }
+  static async delete(id){
+    const findid = await prisma.expense.delete({
+      where: {id:Number(id)}
+    });
+    if(!findid) {return null;}
+  
+    return prisma.expense.delete({
+      where:{
+        id:Number(id)
+      }
+    });
   }
 }
-module.exports = Expense;
+
+
+export default Expense;

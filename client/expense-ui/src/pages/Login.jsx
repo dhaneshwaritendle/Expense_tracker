@@ -1,32 +1,29 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api";
+import { supabase } from "../services/supabase";
 
 function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await axios.post(
-      "/auth/login",
-      {
-        username,
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
         password,
-      }
-    );
+      });
 
-    localStorage.setItem("token", response.data.token);
+      if (error) throw error;
 
-    alert("Login Successful");
-    navigate("/expense");
-
-  } catch (error) {
-    alert(error.response?.data?.message || "Login Failed");
-  }
-};
+      alert("Login Successful");
+      navigate("/expense"); // Navigate to the expense list
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert(error.message || "Login Failed");
+    }
+  };
 
   return (
     <div style={{ padding: "20px" }}>
@@ -34,12 +31,12 @@ function Login() {
 
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Username:</label>
+          <label>Email:</label>
           <br />
           <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 

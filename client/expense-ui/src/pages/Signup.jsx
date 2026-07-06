@@ -1,42 +1,35 @@
 import { useState } from "react";
-import api from "../api";
-import axios  from "axios";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../services/supabase";
 
 function Signup() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      fullName,
-      email,
-      username,
-      password,
-    });
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/signup",
-        {
-          fullName,
-          email,
-          username,
-          password,
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+            username,
+          },
         },
-      );
-      alert("Signup Successful");
-      
-      console.log(response.data);
+      });
 
-      // redirect to expenses
-      navigate("/expense");
+      if (error) throw error;
+
+      alert("Signup successful! Please check your email to verify your account.");
+      navigate("/");
     } catch (error) {
-      console.log("fail to login :", error);
-      alert(error.response?.data?.message || "Signup Failed");
+      console.error("Signup failed:", error);
+      alert(error.message || "Signup Failed");
     }
   };
 
@@ -82,8 +75,8 @@ function Signup() {
           <br />
           <input
             type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
 

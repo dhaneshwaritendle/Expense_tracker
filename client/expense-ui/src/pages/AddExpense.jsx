@@ -1,24 +1,25 @@
 import { useState } from "react";
-import api from "../api";
-import axios from "axios";
+import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 function AddExpense() {
-  navigate = useNavigate;
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
+  const [date, setDate] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const token = localStorage.getItem("token");
+    if( !date || !category || !amount ) alert("missing input field");
 
     try {
-      const response = await axios.post("http://localhost:3000/api/expenses", {
+      const response = await api.post("/expenses", {
         title,
         amount,
         category,
+        date
       });
 
       console.log(response.data);
@@ -37,6 +38,7 @@ function AddExpense() {
 
   return (
     <div style={{ padding: "20px" }}>
+      <Navbar/>
       <h2>Add Expense</h2>
 
       <form onSubmit={handleSubmit}>
@@ -67,7 +69,20 @@ function AddExpense() {
           />
         </div>
 
+        <div>
+          <label>Date:</label>
+          <br />
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </div>
+
         <br />
+
+      
+      
 
         <button type="submit">Add Expense</button>
       </form>
