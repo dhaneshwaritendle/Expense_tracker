@@ -1,0 +1,14 @@
+# Environment variables
+.env
+# Dependencies
+node_modules
+# Logs
+*.log
+# Build output
+dist
+build
+# Prisma
+/prisma/generated/
+
+# MCP Agent Skills
+.agents/
