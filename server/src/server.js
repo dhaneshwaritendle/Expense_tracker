@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 const allowedOrigins = [
-  'http://localhost:5173',
+  // 'http://localhost:5173',
   'https://expense-tracker-1-mpy1.onrender.com' 
 ];
 app.use(cors({
