@@ -1,48 +1,34 @@
 import { NavLink } from "react-router-dom";
 
 function Navbar() {
-  const styles = {
-    navbar: {
-      backgroundColor: "#ffffff",
-      padding: "10px 40px",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-      display: "flex",
-      alignItems: "center",
-    },
-    title: {
-      marginRight: "auto",
-      fontSize: "24px",
-      fontWeight: "bold",
-      color: "#333",
-    },
-    navLink: {
-      marginLeft: "20px",
-      textDecoration: "none",
-      color: "#555",
-      padding: "8px 12px",
-      borderRadius: "5px",
-      transition: "background-color 0.3s",
-    },
-    activeNavLink: {
-      color: "#007bff",
-      fontWeight: "bold",
-    },
+  const getNavLinkClass = ({ isActive }) => {
+    const baseClasses = "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-150 ease-in-out";
+    return isActive
+      ? `${baseClasses} border-blue-500 text-gray-900`
+      : `${baseClasses} border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700`;
   };
 
-  const getNavLinkStyle = ({ isActive }) =>
-    isActive ? { ...styles.navLink, ...styles.activeNavLink } : styles.navLink;
-
   return (
-    <nav style={styles.navbar}>
-      <div style={styles.title}>Expense Tracker</div>
-      <NavLink to="/expense" style={getNavLinkStyle}>
-        Dashboard
-      </NavLink>
-      <NavLink to="/expense-list" style={getNavLinkStyle}>
-        Expenses
-      </NavLink>
-    </nav>
-  );
+    <nav className="bg-white shadow-sm">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex">
+            <div className="flex-shrink-0 flex items-center text-2xl font-bold text-gray-800">
+              Expense Tracker
+            </div>
+            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+              <NavLink to="/expense" className={getNavLinkClass}>
+                Dashboard
+              </NavLink>
+              <NavLink to="/expense-list" className={getNavLinkClass}>
+                Expenses
+              </NavLink>
+            </div>
+          </div>
+        </div>
+      </div>
+      </nav>
+);
 }
 
 export default Navbar;
