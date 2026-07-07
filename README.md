@@ -61,11 +61,13 @@ Follow these instructions to get a copy of the project up and running on your lo
     Create a `.env` file in the `server` directory and add the following variables. You can get these from your Supabase project dashboard.
 
     -   `DATABASE_URL` & `DIRECT_URL`: Found in `Project Settings` > `Database` > `Connection string`.
+    -   `JWT_SECRET`: Found in `Project Settings` > `API` > `JWT Settings`.
 
     ```env
     # .env
     DATABASE_URL="postgresql://..."
     DIRECT_URL="postgresql://..."
+    JWT_SECRET="your-supabase-jwt-secret"
     PORT=3000
     ```
 
@@ -108,4 +110,3 @@ Follow these instructions to get a copy of the project up and running on your lo
     npm run dev
     ```
     The frontend application will be running on `http://localhost:5173`.
-

@@ -6,17 +6,22 @@ import Expense from "./pages/Expense";
 import AddExpense from "./pages/AddExpense";
 import ExpenseList from "./pages/ExpenseList";
 import EditExpense  from "./pages/EditExpense";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/expense" element={<Expense />} />
-        <Route path="/add-expense" element={<AddExpense />} />
-        <Route path="/expense-list" element={<ExpenseList />} />
-        <Route path="/edit-expense/:id" element={<EditExpense />} />
+        {/* Protected routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/expense" element={<Expense />} />
+          <Route path="/add-expense" element={<AddExpense />} />
+          <Route path="/expense-list" element={<ExpenseList />} />
+          <Route path="/edit-expense/:id" element={<EditExpense />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
