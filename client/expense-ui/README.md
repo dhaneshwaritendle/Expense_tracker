@@ -1,18 +1,111 @@
-# React + Vite
+# Expense Tracker Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack web application designed to help users track their personal expenses. Built with a modern tech stack including React, Node.js, Express, and Supabase for authentication and database services.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+-   **User Authentication**: Secure user signup and login handled by Supabase Auth.
+-   **Expense Management**: Create, Read, Update, and Delete (CRUD) operations for expenses.
+-   **Dashboard**: A central place to view key information and navigate the app.
+-   **Modern UI**: A clean, minimalistic, and responsive user interface built with Tailwind CSS.
+-   **RESTful API**: A robust backend server built with Express.js.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+-   **Frontend**:
+    -   [React](https://reactjs.org/)
+    -   [Vite](https://vitejs.dev/)
+    -   [Tailwind CSS](https://tailwindcss.com/)
+    -   [React Router](https://reactrouter.com/)
+    -   [Axios](https://axios-http.com/)
+-   **Backend**:
+    -   [Node.js](https://nodejs.org/)
+    -   [Express.js](https://expressjs.com/)
+    -   [Prisma](https://www.prisma.io/)
+-   **Database & Auth**:
+    -   [PostgreSQL](https://www.postgresql.org/) (hosted on Supabase)
+    -   [Supabase](https://supabase.io/) (for Auth and Database)
 
-Note: This will impact Vite dev & build performances.
+## Project Structure
 
-## Expanding the ESLint configuration
+The project is a monorepo with two main directories:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+-   `client/expense-ui/`: Contains the React frontend application.
+-   `server/`: Contains the Node.js/Express backend server and Prisma schema.
+
+---
+
+## Getting Started
+
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+-   Node.js (v18 or later recommended)
+-   npm or yarn
+-   A free Supabase account
+
+### Backend Setup
+
+1.  **Navigate to the server directory:**
+    ```bash
+    cd server
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Set up environment variables:**
+    Create a `.env` file in the `server` directory and add the following variables. You can get these from your Supabase project dashboard.
+
+    -   `DATABASE_URL` & `DIRECT_URL`: Found in `Project Settings` > `Database` > `Connection string`.
+
+    ```env
+    # .env
+    DATABASE_URL="postgresql://..."
+    DIRECT_URL="postgresql://..."
+    PORT=3000
+    ```
+
+4.  **Run database migrations:**
+    This will set up your database schema based on `prisma/schema.prisma`.
+    ```bash
+    npx prisma migrate dev
+    ```
+
+5.  **Start the server:**
+    ```bash
+    npm start
+    ```
+    The backend server will be running on `http://localhost:3000`.
+
+### Frontend Setup
+
+1.  **Navigate to the client directory:**
+    ```bash
+    cd client/expense-ui
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Set up environment variables:**
+    Create a `.env` file in the `client/expense-ui` directory and add the following variables from your Supabase project dashboard (`Project Settings` > `API`).
+
+    ```env
+    # .env
+    VITE_API_BASE_URL=http://localhost:3000
+    VITE_SUPABASE_URL="https://<your-project-id>.supabase.co"
+    VITE_SUPABASE_ANON_KEY="your-supabase-anon-key"
+    ```
+
+4.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+    The frontend application will be running on `http://localhost:5173`.
+
