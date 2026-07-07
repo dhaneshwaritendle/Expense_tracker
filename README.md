@@ -1,5 +1,6 @@
-# Expense Tracker Application
+# [Expense Tracker Application](https://expense-tracker-1-mpy1.onrender.com)
 
+Check out the deployed application on the url : https://expense-tracker-1-mpy1.onrender.com
 A full-stack web application designed to help users track their personal expenses. Built with a modern tech stack including React, Node.js, Express, and Supabase for authentication and database services.
 
 ## Features
@@ -9,6 +10,16 @@ A full-stack web application designed to help users track their personal expense
 -   **Dashboard**: A central place to view key information and navigate the app.
 -   **Modern UI**: A clean, minimalistic, and responsive user interface built with Tailwind CSS.
 -   **RESTful API**: A robust backend server built with Express.js.
+
+## 🗺️ Roadmap & Upcoming Features
+
+I am actively working on expanding this application. Here are the features currently planned or in development:
+
+-   [ ] **Bulk CSV Import/Export**: Allow users to upload historical financial records via CSV or export data for spreadsheet analysis.
+-   [ ] **Interactive Data Analytics**: Add interactive pie charts and trend graphs to visualize monthly distributions by category.
+-   [ ] **Budget Threshold Alerts**: Enable users to set monthly spending limits with automated warnings when nearing the cap.
+-   [ ] **Recurring Expenses**: Support automated logging for fixed monthly subscriptions (e.g., Netflix, gym memberships).
+
 
 ## Tech Stack
 
@@ -61,14 +72,14 @@ Follow these instructions to get a copy of the project up and running on your lo
     Create a `.env` file in the `server` directory and add the following variables. You can get these from your Supabase project dashboard.
 
     -   `DATABASE_URL` & `DIRECT_URL`: Found in `Project Settings` > `Database` > `Connection string`.
-    -   `JWT_SECRET`: Found in `Project Settings` > `API` > `JWT Settings`.
 
     ```env
     # .env
     DATABASE_URL="postgresql://..."
     DIRECT_URL="postgresql://..."
-    JWT_SECRET="your-supabase-jwt-secret"
     PORT=3000
+    VITE_SUPABASE_URL="https://<your-project-id>.supabase.co"
+    VITE_SUPABASE_ANON_KEY="your-supabase-anon-key"
     ```
 
 4.  **Run database migrations:**
@@ -110,3 +121,4 @@ Follow these instructions to get a copy of the project up and running on your lo
     npm run dev
     ```
     The frontend application will be running on `http://localhost:5173`.
+
