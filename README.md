@@ -1,6 +1,6 @@
-# [Expense Tracker Application](https://expense-tracker-1-mpy1.onrender.com/expense)
+# [Expense Tracker Application](https://expense-tracker-1-mpy1.onrender.com)
 
-Check out the deployed application on the url : https://expense-tracker-1-mpy1.onrender.com/expense
+Check out the deployed application on the url : https://expense-tracker-1-mpy1.onrender.com
 A full-stack web application designed to help users track their personal expenses. Built with a modern tech stack including React, Node.js, Express, and Supabase for authentication and database services.
 
 ## Features
