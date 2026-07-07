@@ -18,6 +18,7 @@ export function AuthProvider({ children }) {
       }
     );
 
+    
     // We also need to get the initial session.
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
